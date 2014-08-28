@@ -248,14 +248,14 @@
     * @param string $charset
     * @return string
     */
-    public function generate($output = 'json', $charset = 'UTF-8')
+    public function generate($output = 'json', $charset = 'UTF-8', $debug = false)
     {
       if(strtolower($output) == 'json')
         $this->get_paging();
 
       $this->get_ordering();
       $this->get_filtering();
-      return $this->produce_output(strtolower($output), strtolower($charset));
+      return $this->produce_output(strtolower($output), strtolower($charset), $debug);
     }
 
     /**
@@ -344,15 +344,35 @@
     * @param string $charset
     * @return mixed
     */
-    private function produce_output($output, $charset)
+    private function produce_output($output, $charset, $debug)
     {
       $aaData = array();
       $rResult = $this->get_display_result();
 
+      if($debug) {
+        chromephp('rResult get_display_result', 'groupcollapsed');
+        chromephp($this->ci->db->last_query());
+        chromephp('', 'groupend');
+      }
+
       if($output == 'json')
       {
         $iTotal = $this->get_total_results();
+
+        if($debug) {
+          chromephp('iTotal get_total_results', 'groupcollapsed');
+          chromephp($this->ci->db->last_query());
+          chromephp('', 'groupend');
+        }
+
         $iFilteredTotal = $this->get_total_results(TRUE);
+
+        if($debug) {
+          chromephp('iFilteredTotal get_total_results TRUE', 'groupcollapsed');
+          chromephp($this->ci->db->last_query());
+          chromephp('', 'groupend');
+        }
+
       }
 
       foreach($rResult->result_array() as $row_key => $row_val)
