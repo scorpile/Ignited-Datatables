@@ -155,7 +155,7 @@
       $this->ci->db->or_where($key_condition, $val, $backtick_protect);
       return $this;
     }
-    
+
     /**
     * Generates the WHERE IN portion of the query
     *
@@ -279,12 +279,12 @@
     */
     private function get_ordering()
     {
-      
+
       $Data = $this->ci->input->post('columns');
 
 
       if ($this->ci->input->post('order'))
-        foreach ($this->ci->input->post('order') as $key) 
+        foreach ($this->ci->input->post('order') as $key)
           if($this->check_cType())
             $this->ci->db->order_by($Data[$key['column']]['data'], $key['dir']);
           else
@@ -435,7 +435,7 @@
 
       foreach($this->or_where as $val)
         $this->ci->db->or_where($val[0], $val[1], $val[2]);
-        
+
       foreach($this->where_in as $val)
         $this->ci->db->where_in($val[0], $val[1], $val[2]);
 
@@ -452,6 +452,7 @@
       }
 
       $query = $this->ci->db->get($this->table, NULL, NULL, FALSE);
+
       return $query->num_rows();
     }
 
