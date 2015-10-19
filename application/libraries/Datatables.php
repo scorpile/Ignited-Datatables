@@ -29,6 +29,7 @@
     private $where          = array();
     private $or_where       = array();
     private $where_in       = array();
+    private $or_where_in    = array();
     private $like           = array();
     private $or_like        = array();
     private $filter         = array();
@@ -169,6 +170,21 @@
     {
       $this->where_in[] = array($key_condition, $val);
       $this->ci->db->where_in($key_condition, $val);
+      return $this;
+    }
+
+    /**
+    * Generates the WHERE IN portion of the query
+    *
+    * @param mixed $key_condition
+    * @param string $val
+    * @param bool $backtick_protect
+    * @return mixed
+    */
+    public function or_where_in($key_condition, $val = NULL)
+    {
+      $this->or_where_in[] = array($key_condition, $val);
+      $this->ci->db->or_where_in($key_condition, $val, FALSE, 'OR ');
       return $this;
     }
 
@@ -454,6 +470,9 @@
 
       foreach($this->where_in as $val)
         $this->ci->db->where_in($val[0], $val[1]);
+
+      foreach($this->or_where_in as $val)
+        $this->ci->db->or_where_in($val[0], $val[1], FALSE, 'OR ');
 
       foreach($this->group_by as $val)
         $this->ci->db->group_by($val);
