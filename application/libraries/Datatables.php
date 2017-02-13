@@ -492,19 +492,15 @@
       }
 
       if(method_exists($this->ci->db, 'get_compiled_select')) {
-
-        $subquery = $this->ci->db->get_compiled_select($this->table);
-        $countingsql = "SELECT COUNT(*) FROM (" . $subquery . ") SqueryAux";
-        $query = $this->ci->db->query($countingsql);
-        $result = $query->row_array();
-        $count = $result['COUNT(*)'];
-
+              $subquery = $this->ci->db->get_compiled_select($this->table);
       } else {
-
-        $query = $this->ci->db->get($this->table, NULL, NULL, FALSE);
-        $count = $query->num_rows();
-
+              $subquery = $this->ci->db->_compile_select();
+              $this->ci->db->_reset_select();
       }
+      $countingsql = "SELECT COUNT(*) FROM (" . $subquery . ") SqueryAux";
+      $query = $this->ci->db->query($countingsql);
+      $result = $query->row_array();
+      $count = $result['COUNT(*)'];
 
       return $count;
 
