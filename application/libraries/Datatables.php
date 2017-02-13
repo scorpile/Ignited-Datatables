@@ -521,6 +521,9 @@
     {
       $replace_string = '';
 
+      // Go through our array backwards, else $1 (foo) will replace $11, $12 etc with foo1, foo2 etc
+      $custom_val['replacement'] = array_reverse($custom_val['replacement'], true);
+
       if(isset($custom_val['replacement']) && is_array($custom_val['replacement']))
       {
         foreach($custom_val['replacement'] as $key => $val)
